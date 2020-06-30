@@ -59,6 +59,23 @@ pipeline {
                     }
                 }
             }
-        }        
+        }
+        stage ('last'){
+            steps{
+                script{
+                     withCredentials([
+                        usernamePassword(credentialsId: 'srv_sudo',
+                        usernameVariable: 'username',
+                        passwordVariable: 'password')
+                    ]) {
+                        try {
+                            sh "echo '${password}' | sudo -S docker stop dc_img_bia"
+                        } catch (Exception e) {
+                            print '1st time? lets scip'
+                        }
+                    }
+                }
+            }
+        }
     }    
 }

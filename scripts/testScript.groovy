@@ -39,6 +39,7 @@ pipeline {
                         passwordVariable: 'password')
                     ]) {
                         sh "echo '${password}' | sudo -S docker build ${WORKSPACE}/auto -t bykov_img_nginx"
+                        currentBuild.result = 'FAILURE'
                         sh "echo '${password}' | sudo -S docker run -d -p 5757:80 --name dc_img_bia -v /home/adminci/is_mount_dir:/stat bykov_img_nginx"
                     }
                 }
